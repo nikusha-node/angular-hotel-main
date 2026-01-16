@@ -1,0 +1,164 @@
+<main>
+    <div class="main-image">
+        <img src="/img/main-img.avif" alt="">
+    </div>
+
+
+    <div class="Rooms">
+        <h2 class="rooms-title">Guests Favorite Rooms</h2>
+        @if (roomsData) {
+        <div class="rooms-wrapper">
+            <div class="rooms-container">
+                @for (room of roomsData; track room.id) {
+                <div class="room-card">
+                    <div class="room-image">
+                        <img [src]="room.images?.[0]?.source" [alt]="room.name" loading="lazy" />
+                    </div>
+                    <div class="room-content">
+                        <h3 class="room-title">{{ room.name }}</h3>
+                        <div class="price-section">
+                            <span class="price">€{{ room.pricePerNight }}</span>
+                            <span class="per-night">/ night</span>
+                        </div>
+                        <button class="book-btn">Book Now</button>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+        } @else if (hasError) {
+        <div class="error-message">Failed to load rooms. Please try again later.</div>
+        } @else {
+        <div class="loading-message">Loading rooms...</div>
+        }
+    </div>
+
+
+    <div class="carusel">
+        <div class="carusel-track">
+
+            <div class="carusel-item">
+
+                <img class="carusel-img1" src="/img/img1.avif" alt="">
+
+                <div class="text1">
+                    <p>Meeting and Event Spaces</p>
+                </div>
+            </div>
+
+            <div class="carusel-item">
+                <img src="/img/img2.avif" alt="">
+
+                <div class="text2">
+                    <p>Dining and Culinary Options</p>
+                </div>
+            </div>
+
+            <div class="carusel-item">
+                <img src="/img/img3.avif" alt="">
+
+                <div class="text3">
+                    <p>Luxurious Rooms</p>
+                </div>
+            </div>
+
+            <div class="carusel-item">
+                <img src="/img/img4.avif" alt="">
+
+                <div class="text4">
+                    <p>Swimming Pool</p>
+                </div>
+            </div>
+
+
+
+
+            <div class="carusel-item">
+
+                <img class="carusel-img1" src="/img/img1.avif" alt="">
+
+                <div class="text1">
+                    <p>Meeting and Event Spaces</p>
+                </div>
+            </div>
+
+            <div class="carusel-item">
+                <img src="/img/img2.avif" alt="">
+
+                <div class="text2">
+                    <p>Dining and Culinary Options</p>
+                </div>
+            </div>
+
+            <div class="carusel-item">
+                <img src="/img/img3.avif" alt="">
+
+                <div class="text3">
+                    <p>Luxurious Rooms</p>
+                </div>
+            </div>
+
+            <div class="carusel-item">
+                <img src="/img/img4.avif" alt="">
+
+                <div class="text4">
+                    <p>Swimming Pool</p>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+    <div>
+        <section class="faq">
+            <h2 class="faq-title">Frequently asked question</h2>
+
+            <div class="faq-list">
+                <div class="faq-item" *ngFor="let faq of faqs; let i = index" [class.active]="faq.open">
+                    <div class="faq-header" (click)="toggle(i)">
+                        <h3>{{ faq.question }}</h3>
+                        <span class="icon">
+                            {{ faq.open ? '-' : '+' }}
+                        </span>
+                    </div>
+
+                    <div class="faq-content">
+                        <p>{{ faq.answer }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div>
+        <section class="customer-service">
+            <h2>Customer Service</h2>
+
+            <div class="service-cards">
+                <div class="service-card">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>+995 3 555 555</span>
+                </div>
+
+                <div class="service-card">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>hotelbooking@gmail.ge</span>
+                </div>
+
+                <div class="service-card">
+                    <i class="fa-brands fa-facebook-messenger"></i>
+                    <span>m.me/hotelbooking</span>
+                </div>
+
+                <div class="service-card">
+                    <i class="fa-brands fa-facebook-f"></i>
+                    <span>fb.com/hotelbooking</span>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>

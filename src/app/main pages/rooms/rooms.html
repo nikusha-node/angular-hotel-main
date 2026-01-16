@@ -1,0 +1,224 @@
+@if (showAlert) {
+    <div class="custom-alert">
+        <div class="alert-content">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-text">
+                <strong>Date Error</strong>
+                <p>{{ alertMessage }}</p>
+            </div>
+            <button class="alert-close" (click)="closeAlert()">×</button>
+        </div>
+    </div>
+}
+
+@if (toDoData && toDoData.length > 0) {
+<div class="filter-section">
+    <form [formGroup]="filterForm" class="filter-form">
+        <!-- Room Type Quick Filters -->
+        <div class="filter-category">
+            <h4 class="filter-title">Room Type</h4>
+            <div class="room-type-buttons">
+                @for (type of roomTypes; track type) {
+                    <button type="button" 
+                            class="room-type-btn" 
+                            [class.active]="filterForm.get('roomType')?.value === type"
+                            (click)="selectRoomType(type)">
+                        {{ type }}
+                    </button>
+                }
+            </div>
+        </div>
+
+        <!-- Price Range Slider -->
+        <div class="filter-category">
+            <div class="price-header">
+                <h4 class="filter-title">Price Per Night</h4>
+                <div class="price-inputs-inline">
+                    <div class="price-input-group">
+                        <label>From</label>
+                        <input type="number" 
+                               formControlName="minPrice" 
+                               min="0" 
+                               max="1000" 
+                               class="price-input"
+                               (input)="syncMinSlider()">
+                    </div>
+                    <div class="price-input-group">
+                        <label>To</label>
+                        <input type="number" 
+                               formControlName="maxPrice" 
+                               min="0" 
+                               max="1000" 
+                               class="price-input"
+                               (input)="syncMaxSlider()">
+                    </div>
+                </div>
+            </div>
+            <div class="price-slider-wrapper">
+                <div class="price-slider-track">
+                    <input type="range" 
+                           formControlName="minPrice" 
+                           min="0" 
+                           max="1000" 
+                           class="price-slider price-slider-min"
+                           [value]="filterForm.get('minPrice')?.value"
+                           (input)="updateMinPrice($event)">
+                    <input type="range" 
+                           formControlName="maxPrice" 
+                           min="0" 
+                           max="1000" 
+                           class="price-slider price-slider-max"
+                           [value]="filterForm.get('maxPrice')?.value"
+                           (input)="updateMaxPrice($event)">
+                </div>
+            </div>
+        </div>
+
+        <!-- Date and Guest Filters -->
+        <div class="filter-row">
+            <div class="filter-group">
+                <label>Check-in</label>
+                <input type="date" formControlName="checkIn" class="filter-input" (change)="onCheckInChange()">
+            </div>
+
+            <div class="filter-group">
+                <label>Check-out</label>
+                <input type="date" formControlName="checkOut" class="filter-input">
+            </div>
+
+            <div class="filter-group">
+                <label>Number of Guests</label>
+                <input type="number" formControlName="adults" min="1" max="10" class="filter-input">
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="filter-actions">
+            <button type="button" (click)="applyFilter()" class="apply-btn">
+                <span>APPLY FILTER</span>
+            </button>
+            <button type="button" (click)="resetFilter()" class="reset-btn">
+                <span>RESET</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="rooms-wrapper">
+    <div class="rooms-container">
+        @for (room of toDoData; track room.id) {
+        <div class="room-card">
+            <div class="room-image">
+                <img [src]="room.images?.[0]?.source" [alt]="room.name" loading="lazy" />
+            </div>
+
+            <div class="room-content">
+                <h3 class="room-title">{{ room.name }}</h3>
+
+                <div class="price-section">
+                    <span class="price">₾ {{ room.pricePerNight }}</span>
+                    <span class="per-night">/ night</span>
+                </div>
+
+                <button class="book-btn" (click)="navigateToBooking(room.id)">Book Now</button>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+} @else if (toDoData && toDoData.length === 0) {
+<div class="filter-section">
+    <form [formGroup]="filterForm" class="filter-form">
+        <!-- Same filter content as above -->
+        <div class="filter-category">
+            <h4 class="filter-title">Room Type</h4>
+            <div class="room-type-buttons">
+                @for (type of roomTypes; track type) {
+                    <button type="button" 
+                            class="room-type-btn" 
+                            [class.active]="filterForm.get('roomType')?.value === type"
+                            (click)="selectRoomType(type)">
+                        {{ type }}
+                    </button>
+                }
+            </div>
+        </div>
+
+        <div class="filter-category">
+            <div class="price-header">
+                <h4 class="filter-title">Price Per Night</h4>
+                <div class="price-inputs-inline">
+                    <div class="price-input-group">
+                        <label>From</label>
+                        <input type="number" 
+                               formControlName="minPrice" 
+                               min="0" 
+                               max="1000" 
+                               class="price-input"
+                               (input)="syncMinSlider()">
+                    </div>
+                    <div class="price-input-group">
+                        <label>To</label>
+                        <input type="number" 
+                               formControlName="maxPrice" 
+                               min="0" 
+                               max="1000" 
+                               class="price-input"
+                               (input)="syncMaxSlider()">
+                    </div>
+                </div>
+            </div>
+            <div class="price-slider-wrapper">
+                <div class="price-slider-track">
+                    <input type="range" 
+                           formControlName="minPrice" 
+                           min="0" 
+                           max="1000" 
+                           class="price-slider price-slider-min"
+                           [value]="filterForm.get('minPrice')?.value"
+                           (input)="updateMinPrice($event)">
+                    <input type="range" 
+                           formControlName="maxPrice" 
+                           min="0" 
+                           max="1000" 
+                           class="price-slider price-slider-max"
+                           [value]="filterForm.get('maxPrice')?.value"
+                           (input)="updateMaxPrice($event)">
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-row">
+            <div class="filter-group">
+                <label>Check-in</label>
+                <input type="date" formControlName="checkIn" class="filter-input" (change)="onCheckInChange()">
+            </div>
+
+            <div class="filter-group">
+                <label>Check-out</label>
+                <input type="date" formControlName="checkOut" class="filter-input">
+            </div>
+
+            <div class="filter-group">
+                <label>Number of Guests</label>
+                <input type="number" formControlName="adults" min="1" max="10" class="filter-input">
+            </div>
+        </div>
+
+        <div class="filter-actions">
+            <button type="button" (click)="applyFilter()" class="apply-btn">
+                <span>APPLY FILTER</span>
+            </button>
+            <button type="button" (click)="resetFilter()" class="reset-btn">
+                <span>RESET</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="no-results">
+    <div class="no-results-icon">🔍</div>
+    <h3>No rooms found</h3>
+    <p>Try adjusting your filter criteria to see more available rooms.</p>
+</div>
+}

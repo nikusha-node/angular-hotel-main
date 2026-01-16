@@ -1,0 +1,39 @@
+<header class="header" [class.scrolled]="isScrolled">
+    <div class="header_logo">
+        <h2>StepHotel</h2>
+    </div>
+
+    <nav class="header_nav">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        <a routerLink="/rooms" routerLinkActive="active">Rooms</a>
+        <a routerLink="/hotels" routerLinkActive="active">Hotels</a>
+        <a routerLink="/bookedrooms" routerLinkActive="active">Booked Rooms</a>
+    </nav>
+
+    <div class="header_actions">
+        <a routerLink="/Login" routerLinkActive="active">Login</a>
+        <a routerLink="/register" routerLinkActive="active">Register</a>
+    </div>
+
+
+    <button class="burger-menu" (click)="toggleMenu()" [class.active]="isMenuOpen">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+
+    <div class="mobile-menu" [class.active]="isMenuOpen">
+        <nav class="mobile-nav">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Home</a>
+            <a routerLink="/rooms" routerLinkActive="active" (click)="closeMenu()">Rooms</a>
+            <a routerLink="/hotels" routerLinkActive="active" (click)="closeMenu()">Hotels</a>
+            <a routerLink="/bookedrooms" routerLinkActive="active" (click)="closeMenu()">Booked Rooms</a>
+        </nav>
+
+        <div class="mobile-actions">
+            <a routerLink="/Login" routerLinkActive="active">Login</a>
+            <a routerLink="/register" routerLinkActive="active" (click)="closeMenu()">Register</a>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,248 @@
+@if (showAlert) {
+<div class="custom-alert">
+    <div class="alert-content">
+        <div class="alert-icon">✓</div>
+        <div class="alert-text">
+            <strong>{{ alertMessage.includes('successful') ? 'Success!' : 'Alert' }}</strong>
+            <p>{{ alertMessage }}</p>
+        </div>
+        <button class="alert-close" (click)="closeAlert()">×</button>
+    </div>
+</div>
+}
+
+@if (isLoading) {
+<div class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading room details...</p>
+</div>
+} @else if (hasError || !room) {
+<div class="error-container">
+    <div class="error-icon">❌</div>
+    <h2>Room Not Found</h2>
+    <p>The requested room could not be found or an error occurred.</p>
+    <button class="back-btn" (click)="router.navigate(['/rooms'])">Back to Rooms</button>
+</div>
+} @else {
+<div class="booking-page">
+    <div class="main-content">
+        <div class="room-section">
+            <div class="image-gallery">
+                <div class="main-image">
+                    <img [src]="room.images?.[currentImageIndex]?.source" [alt]="room.name" />
+                    @if (room.images && room.images.length > 1) {
+                    <button class="gallery-nav prev" (click)="previousImage()" [disabled]="currentImageIndex === 0">
+                        <span>‹</span>
+                    </button>
+                    <button class="gallery-nav next" (click)="nextImage()"
+                        [disabled]="currentImageIndex === room.images.length - 1">
+                        <span>›</span>
+                    </button>
+                    }
+                </div>
+                @if (room.images && room.images.length > 1) {
+                <div class="image-thumbnails">
+                    @for (img of room.images; track img.id; let i = $index) {
+                    <div class="thumbnail" [class.active]="i === currentImageIndex" (click)="currentImageIndex = i">
+                        <img [src]="img.source" [alt]="'Thumbnail ' + (i + 1)" />
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="room-details">
+                <h1>{{ room.name }}</h1>
+                <div class="room-price">
+                    <span class="price">₾{{ room.pricePerNight }}</span>
+                    <span class="period">per night</span>
+                </div>
+
+                <div class="room-features">
+                    <div class="feature">
+                        <span class="feature-icon">🛏️</span>
+                        <span>{{ room.roomTypeId === 1 ? 'Single Bed' : room.roomTypeId === 2 ? 'Double Bed' : 'King
+                            Size Bed' }}</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">👥</span>
+                        <span>Max {{ room.maximumGuests }} Guests</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🌐</span>
+                        <span>Free Internet</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">📏</span>
+                        <span>60 square meter</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🏖️</span>
+                        <span>Beach View</span>
+                    </div>
+                </div>
+
+                <div class="room-description">
+                    <p>This beautiful room offers a perfect blend of comfort and luxury. With stunning beach views and
+                        modern amenities, it's the ideal choice for your stay. The spacious 60 square meter layout
+                        provides plenty of room to relax and unwind.</p>
+                </div>
+            </div>
+
+            <div class="overview-section">
+                <h2>Overview</h2>
+                <div class="overview-tabs">
+                    <button class="tab active" (click)="activeTab = 'overview'">Overview</button>
+                    <button class="tab" (click)="activeTab = 'facilities'">Facilities</button>
+                    <button class="tab" (click)="activeTab = 'extra'">Extra</button>
+                </div>
+                <div class="tab-content">
+                    @if (activeTab === 'overview') {
+                    <div class="overview-content">
+                        <p>Experience luxury at its finest in our premium room. This beautifully designed space combines
+                            modern elegance with comfort, featuring a private balcony overlooking the pristine beach.
+                            The room is equipped with state-of-the-art amenities including high-speed internet, premium
+                            bedding, and a spacious bathroom with premium toiletries.</p>
+                        <div class="overview-image">
+                            <img [src]="room.images?.[1]?.source" alt="Room overview" />
+                        </div>
+                    </div>
+                    } @else if (activeTab === 'facilities') {
+                    <div class="facilities-content">
+                        <ul class="facilities-list">
+                            <li>Air Conditioning</li>
+                            <li>Mini Bar</li>
+                            <li>Safety Deposit Box</li>
+                            <li>Flat Screen TV</li>
+                            <li>Hair Dryer</li>
+                            <li>Bathrobes</li>
+                            <li>Work Desk</li>
+                            <li>Tea/Coffee Maker</li>
+                        </ul>
+                    </div>
+                    } @else if (activeTab === 'extra') {
+                    <div class="extra-content">
+                        <p>Additional services available upon request:</p>
+                        <ul class="extra-list">
+                            <li>Airport Transfer</li>
+                            <li>Spa Access</li>
+                            <li>Room Service</li>
+                            <li>Laundry Service</li>
+                        </ul>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="reservation-section">
+            <div class="reservation-card">
+                <h2>Reservation</h2>
+                <div class="room-title-price">
+                    <h3>{{ room.name }}</h3>
+                    <div class="price-display">
+                        <span class="price">₾{{ room.pricePerNight }}</span>
+                        <span class="period">a night</span>
+                    </div>
+                </div>
+
+                <form [formGroup]="bookingForm" class="reservation-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="checkIn">Check-in</label>
+                            <div class="input-with">
+                                <input type="date" id="checkIn" formControlName="checkIn" class="form-input"
+                                    (change)="onDateChange()" [min]="getTodayDate()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkOut">Check-out</label>
+                            <div class="input-with">
+                                <input type="date" id="checkOut" formControlName="checkOut" class="form-input"
+                                    (change)="onDateChange()"
+                                    [min]="bookingForm.get('checkIn')?.value || getTodayDate()">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="customerName">Customer Name</label>
+                        <input type="text" id="customerName" formControlName="customerName" class="form-input"
+                            placeholder="Enter your name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerPhone">Customer Telephone</label>
+                        <input type="tel" id="customerPhone" formControlName="customerPhone" class="form-input"
+                            placeholder="Enter your phone number">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerEmail">Customer Email</label>
+                        <input type="email" id="customerEmail" formControlName="customerEmail" class="form-input"
+                            placeholder="Enter your email">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Number of Guests</label>
+                        <div class="guest-selector">
+                            <div class="guest-input">
+                                <label>Adults</label>
+                                <input type="number" formControlName="adults" min="1" max="{{ room.maximumGuests }}"
+                                    class="guest-number">
+                            </div>
+                            <div class="guest-input">
+                                <label>Children</label>
+                                <input type="number" formControlName="children" min="0"
+                                    max="{{ room.maximumGuests - (bookingForm.get('adults')?.value || 1) }}"
+                                    class="guest-number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="price-summary">
+                        <div class="summary-row">
+                            <span>Room price per night:</span>
+                            <span>₾{{ room.pricePerNight }}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Number of nights:</span>
+                            <span>{{ totalDays }}</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span>₾{{ totalPrice }}</span>
+                        </div>
+                    </div>
+
+                    <button type="button" class="book-now-btn" [disabled]="!canBook()" (click)="submitBooking()">
+                        BOOK NOW
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="other-rooms-section">
+        <h2>Other rooms</h2>
+        <div class="other-rooms-grid">
+            @for (otherRoom of otherRooms; track otherRoom.id) {
+            <div class="other-room-card" (click)="navigateToRoom(otherRoom.id)" (mousedown)="debugClick(otherRoom.id)"
+                style="cursor: pointer; user-select: none;">
+                <img [src]="otherRoom.images?.[0]?.source" [alt]="otherRoom.name" />
+                <div class="room-info">
+                    <h4>{{ otherRoom.name }}</h4>
+                    <p>₾{{ otherRoom.pricePerNight }} per night</p>
+                </div>
+            </div>
+            }
+            @if (otherRooms.length === 0 && !isLoading) {
+            <div class="no-other-rooms">
+                <p>No other rooms available at the moment.</p>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+}
