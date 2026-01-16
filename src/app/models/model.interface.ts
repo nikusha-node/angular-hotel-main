@@ -36,10 +36,17 @@ export interface hotelCard {
 export interface bookingCard {
   id: number;
   roomID: number;
+  roomId?: number;
+  roomName?: string;
   checkInDate: string;
+  checkIn?: string;
   checkOutDate: string;
+  checkOut?: string;
   totalPrice: number;
   isConfirmed: boolean;
+  status?: string;
+  adults?: number;
+  children?: number;
   customerName: string;
   customerId: string;
   customerPhone: string;

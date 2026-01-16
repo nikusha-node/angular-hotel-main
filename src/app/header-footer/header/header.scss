@@ -95,6 +95,93 @@
   transform: translateY(0);
 }
 
+// User Avatar Styles
+.header_actions .user-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .user-avatar-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #bba479;
+      transition: transform 0.3s ease;
+    }
+
+    .default-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d7be8e, #bba479);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      border: 2px solid #bba479;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover .user-avatar,
+    &:hover .default-avatar {
+      transform: scale(1.1);
+    }
+  }
+
+  .user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    margin-top: 10px;
+
+    a {
+      display: block;
+      padding: 12px 16px;
+      color: #333;
+      text-decoration: none;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background-color 0.3s ease;
+
+      &:first-child {
+        border-radius: 8px 8px 0 0;
+      }
+
+      &:last-child {
+        border-bottom: none;
+        border-radius: 0 0 8px 8px;
+      }
+
+      &:hover {
+        background-color: #f8f9fa;
+        color: #bba479;
+      }
+    }
+  }
+
+  &:hover .user-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
 // Burger Menu (Hidden on Desktop)
 .burger-menu {
   display: none;

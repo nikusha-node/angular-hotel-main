@@ -1,0 +1,82 @@
+
+<div class="booked-rooms-container">
+    <div class="booked-rooms-header">
+        <h1>My Booked Rooms</h1>
+        <p>View and manage your hotel room bookings</p>
+    </div>
+
+    @if (hasError) {
+        <div class="error-container">
+            <div class="error-card">
+                <div class="error-icon">⚠️</div>
+                <h2>{{ errorMessage }}</h2>
+                <div class="error-actions">
+                    <button class="btn btn-primary" (click)="goToLogin()">Login</button>
+                    <button class="btn btn-secondary" (click)="goToRegister()">Register</button>
+                </div>
+            </div>
+        </div>
+    } @else {
+        @if (isLoading) {
+            <div class="loading-container">
+                <div class="spinner"></div>
+                <p>Loading your bookings...</p>
+            </div>
+        } @else {
+            @if (bookings.length === 0) {
+                <div class="empty-state">
+                    <div class="empty-icon">🏨</div>
+                    <h2>No Bookings Found</h2>
+                    <p>You haven't made any room bookings yet.</p>
+                    <button class="btn btn-primary" (click)="router.navigate(['/rooms'])">Browse Rooms</button>
+                </div>
+            } @else {
+                <div class="bookings-grid">
+                    @for (booking of bookings; track booking.id) {
+                        <div class="booking-card">
+                            <div class="booking-header">
+                                <h3>Room {{ booking.roomID || booking.id }}</h3>
+                                <span class="booking-status" [class.confirmed]="booking.status === 'Confirmed'" 
+                                      [class.pending]="booking.status === 'Pending'"
+                                      [class.cancelled]="booking.status === 'Cancelled'">
+                                    {{ booking.status || (booking.isConfirmed ? 'Confirmed' : 'Pending') }}
+                                </span>
+                            </div>
+                            
+                            <div class="booking-details">
+                                <div class="detail-row">
+                                    <span class="label">Check-in:</span>
+                                    <span class="value">{{ formatDate(booking.checkInDate) }}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="label">Check-out:</span>
+                                    <span class="value">{{ formatDate(booking.checkOutDate) }}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="label">Guests:</span>
+                                    <span class="value">{{ booking.adults || 1 }} Adults</span>
+                                </div>
+                                @if (booking.children && booking.children > 0) {
+                                    <div class="detail-row">
+                                        <span class="label">Children:</span>
+                                        <span class="value">{{ booking.children }} Children</span>
+                                    </div>
+                                }
+                                <div class="detail-row">
+                                    <span class="label">Total Price:</span>
+                                    <span class="value price">${{ booking.totalPrice || 'N/A' }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="booking-actions">
+                                <button class="btn btn-outline" (click)="router.navigate(['/room-booking', booking.roomID])">
+                                    View Room
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+    }
+</div>

@@ -1,0 +1,50 @@
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="avatar-section">
+                @if (hasAvatar()) {
+                    <img [src]="getAvatarUrl()" [alt]="userData.firstName + ' ' + userData.lastName" class="user-avatar" />
+                } @else {
+                    <div class="default-avatar">{{ getUserInitials() }}</div>
+                }
+            </div>
+            <div class="user-info">
+                <h2>{{ userData?.firstName }} {{ userData?.lastName }}</h2>
+                <p class="user-email">{{ userData?.email }}</p>
+                @if (hasAvatar()) {
+                    <p class="avatar-info">✓ Avatar uploaded</p>
+                } @else {
+                    <p class="avatar-info">No avatar uploaded</p>
+                }
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <div class="info-section">
+                <h3>Profile Information</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>First Name:</label>
+                        <span>{{ userData?.firstName || 'N/A' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Last Name:</label>
+                        <span>{{ userData?.lastName || 'N/A' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Email:</label>
+                        <span>{{ userData?.email || 'N/A' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>User ID:</label>
+                        <span>{{ userData?.id || 'N/A' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions-section">
+                <button class="logout-btn" (click)="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+</div>

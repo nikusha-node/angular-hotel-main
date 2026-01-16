@@ -1,0 +1,37 @@
+<div class="signin-container">
+    <div class="signin-card">
+        <h2>Sign In</h2>
+        <p>Welcome back! Please login to your account</p>
+        
+        @if (showAlert) {
+            <div class="alert" [class.success]="isSuccess" [class.error]="!isSuccess">
+                {{ alertMessage }}
+            </div>
+        }
+
+        <form [formGroup]="loginFormInfo" (ngSubmit)="login()">
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" formControlName="email" placeholder="Enter your email" />
+            </div>
+          
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" id="password" formControlName="password" placeholder="Enter your password" />
+            </div>
+ 
+            <button type="submit" class="signin-btn" [disabled]="isLoading">
+                @if (isLoading) {
+                    <span class="spinner"></span>
+                    Signing In...
+                } @else {
+                    Sign In
+                }
+            </button>
+        </form>
+
+        <div class="signup-link">
+            <p>Don't have an account? <a routerLink="/signup">Register here</a></p>
+        </div>
+    </div>
+</div>

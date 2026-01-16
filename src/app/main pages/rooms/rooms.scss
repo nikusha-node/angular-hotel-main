@@ -1,4 +1,5 @@
-// Custom Alert
+
+
 .custom-alert {
   position: fixed;
   top: 20px;
@@ -10,22 +11,22 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   border-left: 4px solid #f44336;
   animation: slideIn 0.3s ease-out;
-  
+
   .alert-content {
     display: flex;
     align-items: flex-start;
     padding: 16px;
     gap: 12px;
-    
+
     .alert-icon {
       font-size: 20px;
       flex-shrink: 0;
       margin-top: 2px;
     }
-    
+
     .alert-text {
       flex: 1;
-      
+
       strong {
         color: #f44336;
         font-size: 14px;
@@ -33,7 +34,7 @@
         display: block;
         margin-bottom: 4px;
       }
-      
+
       p {
         color: #6b7280;
         font-size: 13px;
@@ -41,7 +42,7 @@
         line-height: 1.4;
       }
     }
-    
+
     .alert-close {
       background: none;
       border: none;
@@ -56,7 +57,7 @@
       justify-content: center;
       border-radius: 4px;
       transition: all 0.2s ease;
-      
+
       &:hover {
         background: #f3f4f6;
         color: #6b7280;
@@ -72,6 +73,7 @@
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -175,27 +177,27 @@
     justify-content: space-between;
     gap: 20px;
     margin-bottom: 20px;
-    
+
     .filter-title {
       margin-bottom: 0;
     }
-    
+
     .price-inputs-inline {
       display: flex;
       gap: 12px;
       align-items: flex-end;
-      
+
       .price-input-group {
         display: flex;
         flex-direction: column;
         gap: 6px;
-        
+
         label {
           font-weight: 600;
           color: #374151;
           font-size: 12px;
         }
-        
+
         .price-input {
           padding: 8px 12px;
           border: 2px solid #e5e7eb;
@@ -204,7 +206,7 @@
           transition: all 0.3s ease;
           background: white;
           width: 80px;
-          
+
           &:focus {
             outline: none;
             border-color: #d7be8e;
@@ -218,7 +220,7 @@
       }
     }
   }
-  
+
   .price-slider-wrapper {
     .price-slider-track {
       position: relative;
@@ -226,7 +228,7 @@
       background: #e5e7eb;
       border-radius: 3px;
       margin: 10px 0;
-      
+
       .price-slider {
         position: absolute;
         width: 100%;
@@ -236,7 +238,7 @@
         -webkit-appearance: none;
         appearance: none;
         pointer-events: none;
-        
+
         &::-webkit-slider-thumb {
           -webkit-appearance: none;
           appearance: none;
@@ -248,7 +250,7 @@
           pointer-events: all;
           box-shadow: 0 2px 8px rgba(187, 164, 121, 0.3);
           transition: all 0.3s ease;
-          
+
           &:hover {
             transform: scale(1.1);
             box-shadow: 0 4px 12px rgba(187, 164, 121, 0.5);
@@ -265,7 +267,7 @@
           pointer-events: all;
           box-shadow: 0 2px 8px rgba(187, 164, 121, 0.3);
           transition: all 0.3s ease;
-          
+
           &:hover {
             transform: scale(1.1);
             box-shadow: 0 4px 12px rgba(187, 164, 121, 0.5);
@@ -416,7 +418,7 @@
           left: 0;
           right: 0;
           bottom: 0;
-          background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.1) 100%);
+          background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
         }
 
         img {
@@ -540,7 +542,7 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 16px;
-      
+
       .price-inputs-inline {
         width: 100%;
         justify-content: space-between;
@@ -563,6 +565,7 @@
   .rooms-wrapper {
     .rooms-container {
       grid-template-columns: 1fr;
+      justify-content: center;
     }
   }
 }

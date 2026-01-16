@@ -1,6 +1,6 @@
 <header class="header" [class.scrolled]="isScrolled">
     <div class="header_logo">
-        <h2>StepHotel</h2>
+        <h2 (click)="goToHome()">StepHotel</h2>
     </div>
 
     <nav class="header_nav">
@@ -11,8 +11,24 @@
     </nav>
 
     <div class="header_actions">
-        <a routerLink="/Login" routerLinkActive="active">Login</a>
-        <a routerLink="/register" routerLinkActive="active">Register</a>
+        @if (!authService.isAuthenticated()) {
+            <a routerLink="/login" routerLinkActive="active">Login</a>
+            <a routerLink="/register" routerLinkActive="active">Register</a>
+        } @else {
+            <div class="user-menu">
+                <a routerLink="/profile" class="user-avatar-link">
+                    @if (authService.getUser()?.avatar) {
+                        <img [src]="authService.getUser().avatar" [alt]="authService.getUser().firstName" class="user-avatar" />
+                    } @else {
+                        <div class="default-avatar">{{ getUserInitials() }}</div>
+                    }
+                </a>
+                <div class="user-dropdown">
+                    <a routerLink="/profile">My Profile</a>
+                    <a (click)="logout()">Logout</a>
+                </div>
+            </div>
+        }
     </div>
 
 
@@ -32,8 +48,19 @@
         </nav>
 
         <div class="mobile-actions">
-            <a routerLink="/Login" routerLinkActive="active">Login</a>
-            <a routerLink="/register" routerLinkActive="active" (click)="closeMenu()">Register</a>
+            @if (!authService.isAuthenticated()) {
+                <a routerLink="/login" routerLinkActive="active">Login</a>
+                <a routerLink="/register" routerLinkActive="active" (click)="closeMenu()">Register</a>
+            } @else {
+                <a routerLink="/profile" routerLinkActive="active" (click)="closeMenu()">
+                    @if (authService.getUser()?.avatar) {
+                        <img [src]="authService.getUser().avatar" [alt]="authService.getUser().firstName" class="user-avatar" />
+                    } @else {
+                        <div class="default-avatar">{{ getUserInitials() }}</div>
+                    }
+                </a>
+                <a (click)="logout(); closeMenu()">Logout</a>
+            }
         </div>
     </div>
 </header>

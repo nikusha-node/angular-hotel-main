@@ -1,3 +1,5 @@
+
+
 <div class="hotels-wrapper">
   <div class="hotels-container hotels-container--column">
 
@@ -13,39 +15,33 @@
     </section>
 
     <div class="cities-filter">
-      <button
-        (click)="filterByCity('All')"
-        [class.active]="activeCity === 'All'">
+      <button (click)="filterByCity('All')" [class.active]="activeCity === 'All'">
         All
       </button>
 
       @for (city of cities; track city) {
-        <button
-          (click)="filterByCity(city)"
-          [class.active]="activeCity === city">
-          {{ city }}
-        </button>
+      <button (click)="filterByCity(city)" [class.active]="activeCity === city">
+        {{ city }}
+      </button>
       }
     </div>
 
     @if (filteredHotels.length === 0) {
-      <p class="no-hotels">No hotels found</p>
+    <p class="no-hotels">No hotels found</p>
     }
 
     @for (hotel of filteredHotels; track hotel.id) {
-      <div
-        class="hotel-card"
-        [style.background-image]="'url(' + hotel.featuredImage + ')'">
+    <div class="hotel-card" [style.background-image]="'url(' + hotel.featuredImage + ')'">
 
-        <div class="overlay">
-          <div class="top-badge">⭐ Luxury Hotel</div>
+      <div class="overlay">
+        <div class="top-badge">⭐ Luxury Hotel</div>
 
-          <div class="content">
-            <h3>{{ hotel.name }}</h3>
-            <button class="view-btn" (click)="viewRooms(hotel.id)">View Rooms</button>
-          </div>
+        <div class="content">
+          <h3>{{ hotel.name }}</h3>
+          <button class="view-btn" (click)="viewRooms(hotel.id)">View Rooms</button>
         </div>
       </div>
+    </div>
     }
 
   </div>

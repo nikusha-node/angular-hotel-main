@@ -1,0 +1,11 @@
+{
+  "/api/*": {
+    "target": "https://everrest.educata.dev",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}

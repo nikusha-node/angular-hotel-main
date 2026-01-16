@@ -46,6 +46,10 @@ export class Home implements OnInit, OnDestroy {
   constructor(private router: Router) {
   }
 
+  navigateToBooking(roomId: number): void {
+    this.router.navigate(['/room-booking', roomId]);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.complete();

@@ -1,14 +1,16 @@
+
+
 @if (showAlert) {
-    <div class="custom-alert">
-        <div class="alert-content">
-            <div class="alert-icon">⚠️</div>
-            <div class="alert-text">
-                <strong>Date Error</strong>
-                <p>{{ alertMessage }}</p>
-            </div>
-            <button class="alert-close" (click)="closeAlert()">×</button>
+<div class="custom-alert">
+    <div class="alert-content">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-text">
+            <strong>Date Error</strong>
+            <p>{{ alertMessage }}</p>
         </div>
+        <button class="alert-close" (click)="closeAlert()">×</button>
     </div>
+</div>
 }
 
 @if (toDoData && toDoData.length > 0) {
@@ -19,12 +21,10 @@
             <h4 class="filter-title">Room Type</h4>
             <div class="room-type-buttons">
                 @for (type of roomTypes; track type) {
-                    <button type="button" 
-                            class="room-type-btn" 
-                            [class.active]="filterForm.get('roomType')?.value === type"
-                            (click)="selectRoomType(type)">
-                        {{ type }}
-                    </button>
+                <button type="button" class="room-type-btn" [class.active]="filterForm.get('roomType')?.value === type"
+                    (click)="selectRoomType(type)">
+                    {{ type }}
+                </button>
                 }
             </div>
         </div>
@@ -36,40 +36,24 @@
                 <div class="price-inputs-inline">
                     <div class="price-input-group">
                         <label>From</label>
-                        <input type="number" 
-                               formControlName="minPrice" 
-                               min="0" 
-                               max="1000" 
-                               class="price-input"
-                               (input)="syncMinSlider()">
+                        <input type="number" formControlName="minPrice" min="0" max="1000" class="price-input"
+                            (input)="syncMinSlider()">
                     </div>
                     <div class="price-input-group">
                         <label>To</label>
-                        <input type="number" 
-                               formControlName="maxPrice" 
-                               min="0" 
-                               max="1000" 
-                               class="price-input"
-                               (input)="syncMaxSlider()">
+                        <input type="number" formControlName="maxPrice" min="0" max="1000" class="price-input"
+                            (input)="syncMaxSlider()">
                     </div>
                 </div>
             </div>
             <div class="price-slider-wrapper">
                 <div class="price-slider-track">
-                    <input type="range" 
-                           formControlName="minPrice" 
-                           min="0" 
-                           max="1000" 
-                           class="price-slider price-slider-min"
-                           [value]="filterForm.get('minPrice')?.value"
-                           (input)="updateMinPrice($event)">
-                    <input type="range" 
-                           formControlName="maxPrice" 
-                           min="0" 
-                           max="1000" 
-                           class="price-slider price-slider-max"
-                           [value]="filterForm.get('maxPrice')?.value"
-                           (input)="updateMaxPrice($event)">
+                    <input type="range" formControlName="minPrice" min="0" max="1000"
+                        class="price-slider price-slider-min" [value]="filterForm.get('minPrice')?.value"
+                        (input)="updateMinPrice($event)">
+                    <input type="range" formControlName="maxPrice" min="0" max="1000"
+                        class="price-slider price-slider-max" [value]="filterForm.get('maxPrice')?.value"
+                        (input)="updateMaxPrice($event)">
                 </div>
             </div>
         </div>
@@ -134,12 +118,10 @@
             <h4 class="filter-title">Room Type</h4>
             <div class="room-type-buttons">
                 @for (type of roomTypes; track type) {
-                    <button type="button" 
-                            class="room-type-btn" 
-                            [class.active]="filterForm.get('roomType')?.value === type"
-                            (click)="selectRoomType(type)">
-                        {{ type }}
-                    </button>
+                <button type="button" class="room-type-btn" [class.active]="filterForm.get('roomType')?.value === type"
+                    (click)="selectRoomType(type)">
+                    {{ type }}
+                </button>
                 }
             </div>
         </div>
@@ -150,40 +132,24 @@
                 <div class="price-inputs-inline">
                     <div class="price-input-group">
                         <label>From</label>
-                        <input type="number" 
-                               formControlName="minPrice" 
-                               min="0" 
-                               max="1000" 
-                               class="price-input"
-                               (input)="syncMinSlider()">
+                        <input type="number" formControlName="minPrice" min="0" max="1000" class="price-input"
+                            (input)="syncMinSlider()">
                     </div>
                     <div class="price-input-group">
                         <label>To</label>
-                        <input type="number" 
-                               formControlName="maxPrice" 
-                               min="0" 
-                               max="1000" 
-                               class="price-input"
-                               (input)="syncMaxSlider()">
+                        <input type="number" formControlName="maxPrice" min="0" max="1000" class="price-input"
+                            (input)="syncMaxSlider()">
                     </div>
                 </div>
             </div>
             <div class="price-slider-wrapper">
                 <div class="price-slider-track">
-                    <input type="range" 
-                           formControlName="minPrice" 
-                           min="0" 
-                           max="1000" 
-                           class="price-slider price-slider-min"
-                           [value]="filterForm.get('minPrice')?.value"
-                           (input)="updateMinPrice($event)">
-                    <input type="range" 
-                           formControlName="maxPrice" 
-                           min="0" 
-                           max="1000" 
-                           class="price-slider price-slider-max"
-                           [value]="filterForm.get('maxPrice')?.value"
-                           (input)="updateMaxPrice($event)">
+                    <input type="range" formControlName="minPrice" min="0" max="1000"
+                        class="price-slider price-slider-min" [value]="filterForm.get('minPrice')?.value"
+                        (input)="updateMinPrice($event)">
+                    <input type="range" formControlName="maxPrice" min="0" max="1000"
+                        class="price-slider price-slider-max" [value]="filterForm.get('maxPrice')?.value"
+                        (input)="updateMaxPrice($event)">
                 </div>
             </div>
         </div>

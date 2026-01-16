@@ -20,7 +20,7 @@
                             <span class="price">€{{ room.pricePerNight }}</span>
                             <span class="per-night">/ night</span>
                         </div>
-                        <button class="book-btn">Book Now</button>
+                        <button class="book-btn" (click)="navigateToBooking(room.id)">Book Now</button>
                     </div>
                 </div>
                 }
