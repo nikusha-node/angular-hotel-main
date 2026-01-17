@@ -65,10 +65,13 @@ export class Service {
     const userData = JSON.parse(sessionStorage.getItem('userData') || '{}');
     const customerId = userData.id || userData.customerId || userData.userId || userData.sub;
     
+    console.log('User data from sessionStorage:', userData);
+    console.log('Extracted customerId:', customerId);
+    
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
-      'X-Customer-ID': customerId.toString()
+      ...(customerId && { 'X-Customer-ID': customerId.toString() })
     });
     
     // Get only bookings created by this customer (posted bookings)

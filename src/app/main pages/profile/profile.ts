@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { AuthService, UserProfile } from '../../services/auth.service';
+
 
 @Component({
   selector: 'app-profile',
@@ -9,37 +11,33 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
-export class Profile {
-  public authService = inject(AuthService);
-  public userData: any = null;
-  public token: string | null = null;
+export class Profile implements OnInit {
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  constructor() {
-    // Get user data from auth service
-    this.userData = this.authService.getUser();
-    this.token = this.authService.getToken();
-    
-    if (this.token) {
-      console.log('User Token:', this.token);
-    }
+  userInfo: UserProfile | null = null;
+  isLoading = true;
+  errorMessage = '';
+
+  ngOnInit(): void {
+    this.loadUserProfile();
   }
 
-  logout() {
+  loadUserProfile(): void {
+    this.authService.getUser().subscribe({
+      next: (data) => {
+        this.userInfo = data;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.errorMessage = error;
+        this.isLoading = false;
+      }
+    });
+  }
+
+  logout(): void {
     this.authService.logout();
-  }
-
-  hasAvatar(): boolean {
-    return !!(this.userData?.avatar && this.userData.avatar.trim() !== '');
-  }
-
-  getAvatarUrl(): string {
-    return this.userData?.avatar || '';
-  }
-
-  getUserInitials(): string {
-    if (!this.userData) return '';
-    const firstName = this.userData.firstName || '';
-    const lastName = this.userData.lastName || '';
-    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+    this.router.navigate(['/signin']);
   }
 }
