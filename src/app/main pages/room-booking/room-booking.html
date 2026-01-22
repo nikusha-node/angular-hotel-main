@@ -92,9 +92,17 @@
             <div class="overview-section">
                 <h2>Overview</h2>
                 <div class="overview-tabs">
-                    <button class="tab active" (click)="activeTab = 'overview'">Overview</button>
-                    <button class="tab" (click)="activeTab = 'facilities'">Facilities</button>
-                    <button class="tab" (click)="activeTab = 'extra'">Extra</button>
+                    <button class="tab" [class.active]="activeTab === 'overview'" (click)="activeTab = 'overview'">
+                        Overview
+                    </button>
+
+                    <button class="tab" [class.active]="activeTab === 'facilities'" (click)="activeTab = 'facilities'">
+                        Facilities
+                    </button>
+
+                    <button class="tab" [class.active]="activeTab === 'extra'" (click)="activeTab = 'extra'">
+                        Extra
+                    </button>
                 </div>
                 <div class="tab-content">
                     @if (activeTab === 'overview') {

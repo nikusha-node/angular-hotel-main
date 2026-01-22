@@ -1,13 +1,13 @@
 <div class="verify-container">
   <div class="verify-card">
-    <!-- Loading State -->
+
     <div *ngIf="isVerifying" class="loading-state">
       <div class="spinner"></div>
       <h2>Verifying Your Email</h2>
       <p>Please wait while we verify your account...</p>
     </div>
 
-    <!-- Success State -->
+
     <div *ngIf="!isVerifying && isSuccess" class="success-state">
       <div class="success-icon">✅</div>
       <h2>Email Verified Successfully!</h2>
@@ -18,7 +18,6 @@
       </button>
     </div>
 
-    <!-- Error State -->
     <div *ngIf="!isVerifying && !isSuccess" class="error-state">
       <div class="error-icon">❌</div>
       <h2>Verification Failed</h2>

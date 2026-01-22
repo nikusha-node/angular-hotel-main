@@ -55,32 +55,25 @@ export class Home implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-
-
-  // დასამატებელია HTML-ში
-  // goToHotels() {
-  //   this.router.navigate(['/hotels']);
-  // }
-
     faqs = [
     {
-      question: '####################',
-      answer: '##############',
+      question: 'Is Wi-Fi and parking included with my stay?',
+      answer: 'Yes. We offer complimentary high-speed Wi-Fi throughout the property, ensuring seamless connectivity at all times. Private on-site parking is also available to guests at no additional cost for the duration of their stay.',
       open: true
     },
     {
-      question: '#########################',
-      answer: '############',
+      question: 'What is your reservation cancellation policy?',
+      answer: 'We understand that plans may change. Most reservations may be cancelled or modified up to 24 hours prior to arrival without penalty. Certain promotional or special rates may have different terms, which will be clearly outlined at the time of booking.',
       open: false
     },
     {
-      question: '######################',
-      answer: '###########################',
+      question: 'Is breakfast or dining included with my stay?',
+      answer: 'Select room rates include a complimentary gourmet breakfast, thoughtfully prepared using fresh, high-quality ingredients. Guests may also enjoy access to our on-site dining venues, offering an elegant selection of local and international cuisine. Dining inclusions vary by reservation and are clearly indicated at the time of booking.',
       open: false
     },
     {
-      question: '########################',
-      answer: '#######################',
+      question: 'Do you offer in-room dining or room service?',
+      answer: 'Yes. We provide premium in-room dining service, allowing guests to enjoy exquisite meals and beverages in the privacy of their room. Our room service menu is available daily during designated hours, delivering restaurant-quality cuisine with impeccable service.',
       open: false
     }
   ];

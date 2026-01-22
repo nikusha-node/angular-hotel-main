@@ -11,5 +11,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('hotel-oto2429');
+  protected readonly title = signal('hotel-angular');
 }
