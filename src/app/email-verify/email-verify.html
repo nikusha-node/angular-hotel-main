@@ -1,0 +1,42 @@
+<div class="verify-container">
+  <div class="verify-card">
+    <!-- Loading State -->
+    <div *ngIf="isVerifying" class="loading-state">
+      <div class="spinner"></div>
+      <h2>Verifying Your Email</h2>
+      <p>Please wait while we verify your account...</p>
+    </div>
+
+    <!-- Success State -->
+    <div *ngIf="!isVerifying && isSuccess" class="success-state">
+      <div class="success-icon">✅</div>
+      <h2>Email Verified Successfully!</h2>
+      <p class="success-message">Your account has been activated.</p>
+      <p class="redirect-info">Redirecting to login page in 3 seconds...</p>
+      <button class="btn-primary" (click)="goToLogin()">
+        Go to Login Now
+      </button>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="!isVerifying && !isSuccess" class="error-state">
+      <div class="error-icon">❌</div>
+      <h2>Verification Failed</h2>
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+      <div class="error-actions">
+        <button class="btn-secondary" (click)="goToSignup()">
+          Register Again
+        </button>
+        <button class="btn-primary" (click)="goToLogin()">
+          Go to Login
+        </button>
+      </div>
+      <div class="help-text">
+        <p>If you're experiencing issues, please contact support.</p>
+      </div>
+    </div>
+  </div>
+</div>
+*/

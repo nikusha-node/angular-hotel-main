@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Service } from '../../services/service';
+import { AuthService } from '../../services/auth.service';
 import { roomCard } from '../../models/model.interface';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -14,6 +15,7 @@ import { Subject, takeUntil, catchError, of, tap } from 'rxjs';
 })
 export class RoomBooking implements OnInit, OnDestroy {
   private service = inject(Service);
+  private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   public router = inject(Router);
   private fb = inject(FormBuilder);
@@ -31,6 +33,12 @@ export class RoomBooking implements OnInit, OnDestroy {
   public currentImageIndex = 0;
   public activeTab = 'overview';
   public otherRooms: roomCard[] = [];
+  public currentUser: any = null;
+  
+  // Calendar properties
+  public calendarDays: { date: Date; day: number; isBooked: boolean; isPast: boolean; isSelected: boolean; inRange: boolean }[] = [];
+  public currentMonth: Date = new Date();
+  public weekDays: string[] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   
   private destroy$ = new Subject<void>();
 
@@ -58,7 +66,37 @@ export class RoomBooking implements OnInit, OnDestroy {
     // Watch form changes to calculate price
     this.bookingForm.valueChanges.subscribe(() => {
       this.calculatePrice();
+      this.updateCalendarSelection();
     });
+
+    this.loadCurrentUser();
+    this.generateCalendar();
+  }
+
+  private loadCurrentUser(): void {
+    if (this.authService.isAuthenticated()) {
+      this.authService.getUser()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (user) => {
+            console.log('Current user loaded in booking:', user);
+            this.currentUser = user;
+            if (user) {
+              // Pre-fill form if empty
+              if (!this.bookingForm.get('customerName')?.value) {
+                this.bookingForm.patchValue({
+                  customerName: `${user.firstName} ${user.lastName}`,
+                  customerEmail: user.email,
+                  customerPhone: user.phone
+                });
+              }
+              // Ensure session storage is in sync
+              sessionStorage.setItem('userData', JSON.stringify(user));
+            }
+          },
+          error: (err) => console.error('Error loading current user:', err)
+        });
+    }
   }
 
   private loadRoomDetails(roomId: number): void {
@@ -88,7 +126,12 @@ export class RoomBooking implements OnInit, OnDestroy {
 
   private loadBookedDates(roomId: number): void {
     if (this.room && this.room.bookedDates) {
-      this.bookedDates = this.room.bookedDates.map(bd => bd.date);
+      this.bookedDates = this.room.bookedDates.map(bd => {
+        // Handle both string and Date objects if API returns differently
+        const d = new Date(bd.date);
+        return d.toISOString().split('T')[0];
+      });
+      this.generateCalendar();
     }
   }
 
@@ -111,6 +154,82 @@ export class RoomBooking implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  // Calendar Methods
+  generateCalendar(): void {
+    const year = this.currentMonth.getFullYear();
+    const month = this.currentMonth.getMonth();
+    
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    
+    const daysInMonth = lastDay.getDate();
+    const startingDayOfWeek = firstDay.getDay(); // 0 = Sunday
+    
+    this.calendarDays = [];
+    
+    // Previous month's empty slots
+    for (let i = 0; i < startingDayOfWeek; i++) {
+      this.calendarDays.push({ 
+        date: new Date(year, month, -startingDayOfWeek + i + 1),
+        day: 0, 
+        isBooked: false, 
+        isPast: true, 
+        isSelected: false,
+        inRange: false 
+      });
+    }
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const checkIn = this.bookingForm.get('checkIn')?.value ? new Date(this.bookingForm.get('checkIn')?.value) : null;
+    const checkOut = this.bookingForm.get('checkOut')?.value ? new Date(this.bookingForm.get('checkOut')?.value) : null;
+    
+    for (let i = 1; i <= daysInMonth; i++) {
+      const date = new Date(year, month, i);
+      date.setHours(0, 0, 0, 0);
+      
+      const dateStr = date.toISOString().split('T')[0];
+      const isBooked = this.bookedDates.includes(dateStr);
+      const isPast = date < today;
+      
+      let isSelected = false;
+      let inRange = false;
+      
+      if (checkIn && date.getTime() === checkIn.getTime()) isSelected = true;
+      if (checkOut && date.getTime() === checkOut.getTime()) isSelected = true;
+      
+      if (checkIn && checkOut && date > checkIn && date < checkOut) inRange = true;
+      
+      this.calendarDays.push({
+        date,
+        day: i,
+        isBooked,
+        isPast,
+        isSelected,
+        inRange
+      });
+    }
+  }
+  
+  prevMonth(): void {
+    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1, 1);
+    this.generateCalendar();
+  }
+  
+  nextMonth(): void {
+    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 1);
+    this.generateCalendar();
+  }
+  
+  updateCalendarSelection(): void {
+    this.generateCalendar();
+  }
+  
+  getMonthName(): string {
+    return this.currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' });
   }
 
   debugClick(roomId: number): void {
@@ -219,15 +338,40 @@ export class RoomBooking implements OnInit, OnDestroy {
   submitBooking(): void {
     if (!this.canBook() || !this.room) return;
 
-    const userDataStr = sessionStorage.getItem('userData');
     let customerId = '';
     
-    if (userDataStr) {
-      const userData = JSON.parse(userDataStr);
-      customerId = userData.id || userData.customerId || userData.userId || userData.sub;
+    // Try to get ID from current user object first
+    if (this.currentUser) {
+      // Check multiple common ID fields including _id for MongoDB
+      customerId = this.currentUser.id || 
+                   this.currentUser._id || 
+                   this.currentUser.userId || 
+                   this.currentUser.customerId || 
+                   this.currentUser.sub;
+                   
+      console.log('Resolved customerId from currentUser:', customerId, this.currentUser);
+    }
+    
+    // Fallback to session storage if not found in currentUser
+    if (!customerId) {
+      const userDataStr = sessionStorage.getItem('userData');
+      if (userDataStr) {
+        try {
+          const userData = JSON.parse(userDataStr);
+          console.log('Fallback to sessionStorage userData:', userData);
+          customerId = userData.id || 
+                       userData._id || 
+                       userData.customerId || 
+                       userData.userId || 
+                       userData.sub;
+        } catch (e) {
+          console.error('Error parsing user data from session storage', e);
+        }
+      }
     }
     
     if (!customerId) {
+      console.error('No customerId found. CurrentUser:', this.currentUser);
       this.showAlert = true;
       this.alertMessage = 'Please login to book a room.';
       setTimeout(() => this.closeAlert(), 3000);

@@ -7,31 +7,32 @@ import { RoomBooking } from './main pages/room-booking/room-booking';
 import { Signup } from './main pages/signup/signup';
 import { Signin } from './main pages/signin/signin';
 import { Profile } from './main pages/profile/profile';
+import { EmailVerify } from './email-verify/email-verify';
 
 export const routes: Routes = [
     {
         path: '',
-        component:Home
+        component: Home
     },
     {
         path: 'rooms',
-        component:Rooms
+        component: Rooms
     },
     {
         path: 'hotels',
-        component:Hotels
+        component: Hotels
     },
     {
         path: 'bookedrooms',
-        component:BookedRooms
+        component: BookedRooms
     },
     {
         path: 'room-booking/:id',
-        component:RoomBooking
+        component: RoomBooking
     },
     {
         path: 'signup',
-        component:Signup
+        component: Signup
     },
     {
         path: 'register',
@@ -40,7 +41,7 @@ export const routes: Routes = [
     },
     {
         path: 'signin',
-        component:Signin
+        component: Signin
     },
     {
         path: 'login',
@@ -48,7 +49,15 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
+        path: 'verify-email', 
+        component: EmailVerify
+    },
+    {
         path: 'profile',
         component: Profile
+    },
+    {
+        path: '**',
+        redirectTo: ''
     }
 ];

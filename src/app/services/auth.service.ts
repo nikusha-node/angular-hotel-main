@@ -31,6 +31,10 @@ export interface VerifyEmailRequest {
 
 export interface UserProfile {
   id: string;
+  _id?: string;
+  userId?: string;
+  customerId?: string;
+  sub?: string;
   firstName: string;
   lastName: string;
   email: string;

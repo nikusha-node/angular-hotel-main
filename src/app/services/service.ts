@@ -72,7 +72,10 @@ export class Service {
     });
     
     // Get only bookings created by this customer (posted bookings)
-    const url = 'https://hotelbooking.stepprojects.ge/api/Booking';
+    let url = 'https://hotelbooking.stepprojects.ge/api/Booking';
+    if (customerId) {
+      url += `?customerId=${customerId}`;
+    }
     
     console.log('Getting user posted bookings for customer:', customerId);
     console.log('Posted bookings API URL:', url);
@@ -90,7 +93,10 @@ export class Service {
     return this.http.post(
       'https://hotelbooking.stepprojects.ge/api/Booking',
       bookingData,
-      { headers }
+      { 
+        headers,
+        responseType: 'text' as 'json'
+      }
     );
   }
 

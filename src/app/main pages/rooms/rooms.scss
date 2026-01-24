@@ -84,7 +84,6 @@
 
 .filter-section {
   max-width: 1200px;
-  width: 100%;
   margin: 200px auto 40px;
   padding: 40px;
   background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
@@ -529,43 +528,257 @@
 }
 
 // Responsive Design
+@media (max-width: 992px) {
+  .filter-section {
+    padding: 30px;
+    margin: 150px 20px 40px;
+
+    .filter-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .filter-section {
-    margin: 120px 20px 40px;
-    padding: 24px;
+    margin: 120px 15px 30px;
+    padding: 20px;
 
     .room-type-buttons {
+      display: grid;
       grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+
+      .room-type-btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 14px;
+        text-align: center;
+      }
     }
 
     .price-header {
       flex-direction: column;
       align-items: flex-start;
-      gap: 16px;
+      gap: 15px;
 
       .price-inputs-inline {
         width: 100%;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+
+        .price-input-group {
+          width: 100%;
+
+          .price-input {
+            width: 100%;
+          }
+        }
       }
     }
 
     .filter-row {
       grid-template-columns: 1fr;
+      gap: 15px;
     }
 
     .filter-actions {
       flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
 
       button {
         width: 100%;
+        padding: 12px;
       }
     }
   }
 
   .rooms-wrapper {
+    padding: 20px 15px;
+
     .rooms-container {
       grid-template-columns: 1fr;
-      justify-content: center;
+      gap: 20px;
+
+      .room-card {
+        height: auto;
+        
+        .room-image {
+          height: 200px;
+        }
+
+        .room-content {
+          padding: 20px;
+
+          .room-title {
+            font-size: 18px;
+          }
+
+          .price-section {
+            .price {
+              font-size: 24px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .filter-section {
+    margin: 90px 8px 20px;
+    padding: 12px;
+
+    .filter-category {
+      gap: 25px;
+
+      .filter-title {
+        font-size: 15px;
+        margin-bottom: 12px;
+      }
+    }
+
+    .room-type-buttons {
+      .room-type-btn {
+        padding: 8px;
+        font-size: 13px;
+        border-radius: 6px;
+      }
+    }
+
+    .price-header {
+      gap: 12px;
+
+      .filter-title {
+        font-size: 15px;
+      }
+
+      .price-inputs-inline {
+        gap: 8px;
+        
+        .price-input-group {
+          label {
+            font-size: 10px;
+          }
+
+          .price-input {
+            padding: 5px 8px;
+            font-size: 12px;
+            width: 70px;
+          }
+        }
+      }
+    }
+
+    .price-slider-wrapper {
+      margin: 12px 0;
+
+      .price-slider-track {
+        margin: 12px 0;
+        height: 4px;
+
+        .price-slider {
+          height: 4px;
+
+          &::-webkit-slider-thumb {
+            width: 18px;
+            height: 18px;
+          }
+
+          &::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+    }
+
+    .filter-row {
+      gap: 10px;
+    }
+
+    .filter-group {
+      label {
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+
+      .filter-input {
+        padding: 8px 10px;
+        font-size: 12px;
+        border-radius: 6px;
+      }
+    }
+
+    .filter-actions {
+      gap: 6px;
+      margin-top: 12px;
+
+      button {
+        padding: 8px;
+        font-size: 13px;
+        border-radius: 6px;
+      }
+    }
+  }
+
+  .rooms-wrapper {
+    padding: 12px 8px;
+
+    .rooms-container {
+      gap: 12px;
+
+      .room-card {
+        .room-image {
+          height: 160px;
+        }
+
+        .room-content {
+          padding: 12px;
+
+          .room-title {
+            font-size: 15px;
+            margin-bottom: 10px;
+          }
+
+          .price-section {
+            margin-bottom: 10px;
+
+            .price {
+              font-size: 20px;
+            }
+
+            .per-night {
+              font-size: 12px;
+            }
+          }
+
+          .book-btn {
+            padding: 10px;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+
+  .no-results {
+    margin: 20px 8px;
+    padding: 30px 12px;
+
+    .no-results-icon {
+      font-size: 40px;
+    }
+
+    h3 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 13px;
     }
   }
 }

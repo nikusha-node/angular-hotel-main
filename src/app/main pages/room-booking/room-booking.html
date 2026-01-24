@@ -146,6 +146,35 @@
                     </div>
                 </div>
 
+                <!-- Availability Calendar -->
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button type="button" (click)="prevMonth()">‹</button>
+                        <span>{{ getMonthName() }}</span>
+                        <button type="button" (click)="nextMonth()">›</button>
+                    </div>
+                    <div class="calendar-grid">
+                        @for (day of weekDays; track day) {
+                            <div class="weekday">{{ day }}</div>
+                        }
+                        @for (day of calendarDays; track day.date) {
+                            <div class="day" 
+                                 [class.empty]="day.day === 0"
+                                 [class.booked]="day.isBooked"
+                                 [class.past]="day.isPast"
+                                 [class.selected]="day.isSelected"
+                                 [class.range]="day.inRange"
+                                 [title]="day.isBooked ? 'Booked' : 'Available'">
+                                {{ day.day !== 0 ? day.day : '' }}
+                            </div>
+                        }
+                    </div>
+                    <div class="calendar-legend">
+                        <div class="legend-item"><span class="dot available"></span> Available</div>
+                        <div class="legend-item"><span class="dot booked"></span> Booked</div>
+                    </div>
+                </div>
+
                 <form [formGroup]="bookingForm" class="reservation-form">
                     <div class="form-row">
                         <div class="form-group">

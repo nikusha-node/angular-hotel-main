@@ -35,7 +35,7 @@
                     @for (booking of bookings; track booking.id) {
                         <div class="booking-card">
                             <div class="booking-header">
-                                <h3>Room {{ booking.roomID || booking.id }}</h3>
+                                <h3>Room {{ booking.roomID || booking.roomId || booking.id }}</h3>
                                 <span class="booking-status" [class.confirmed]="booking.status === 'Confirmed'" 
                                       [class.pending]="booking.status === 'Pending'"
                                       [class.cancelled]="booking.status === 'Cancelled'">
@@ -69,7 +69,7 @@
                             </div>
                             
                             <div class="booking-actions">
-                                <button class="btn btn-outline" (click)="router.navigate(['/room-booking', booking.roomID])">
+                                <button class="btn btn-outline" (click)="router.navigate(['/room-booking', booking.roomID || booking.roomId])">
                                     View Room
                                 </button>
                             </div>

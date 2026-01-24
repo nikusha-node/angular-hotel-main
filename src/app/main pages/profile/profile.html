@@ -1,50 +1,58 @@
 <div class="profile-container">
-    <div class="profile-card">
-        <div class="profile-header">
-            <div class="avatar-section">
-                @if (hasAvatar()) {
-                    <img [src]="getAvatarUrl()" [alt]="userData.firstName + ' ' + userData.lastName" class="user-avatar" />
-                } @else {
-                    <div class="default-avatar">{{ getUserInitials() }}</div>
-                }
-            </div>
-            <div class="user-info">
-                <h2>{{ userData?.firstName }} {{ userData?.lastName }}</h2>
-                <p class="user-email">{{ userData?.email }}</p>
-                @if (hasAvatar()) {
-                    <p class="avatar-info">✓ Avatar uploaded</p>
-                } @else {
-                    <p class="avatar-info">No avatar uploaded</p>
-                }
-            </div>
-        </div>
-
-        <div class="profile-content">
-            <div class="info-section">
-                <h3>Profile Information</h3>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <label>First Name:</label>
-                        <span>{{ userData?.firstName || 'N/A' }}</span>
-                    </div>
-                    <div class="info-item">
-                        <label>Last Name:</label>
-                        <span>{{ userData?.lastName || 'N/A' }}</span>
-                    </div>
-                    <div class="info-item">
-                        <label>Email:</label>
-                        <span>{{ userData?.email || 'N/A' }}</span>
-                    </div>
-                    <div class="info-item">
-                        <label>User ID:</label>
-                        <span>{{ userData?.id || 'N/A' }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="actions-section">
-                <button class="logout-btn" (click)="logout()">Logout</button>
-            </div>
-        </div>
+  <div class="profile-card">
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading profile...</p>
     </div>
+
+    <div *ngIf="errorMessage && !isLoading" class="error-alert">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="userInfo && !isLoading" class="profile-content">
+      <div class="profile-header">
+        <div class="avatar">
+          <img *ngIf="userInfo.avatar" [src]="userInfo.avatar" [alt]="userInfo.firstName" />
+          <div *ngIf="!userInfo.avatar" class="avatar-placeholder">
+            {{ userInfo.firstName.charAt(0) }}{{ userInfo.lastName.charAt(0) }}
+          </div>
+        </div>
+        <h1>{{ userInfo.firstName }} {{ userInfo.lastName }}</h1>
+        <p class="user-email">{{ userInfo.email }}</p>
+      </div>
+
+      <div class="profile-details">
+        <h2>Personal Information</h2>
+        
+        <div class="detail-row">
+          <span class="detail-label">Age:</span>
+          <span class="detail-value">{{ userInfo.age }} years</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Gender:</span>
+          <span class="detail-value">{{ userInfo.gender }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Phone:</span>
+          <span class="detail-value">{{ userInfo.phone }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Address:</span>
+          <span class="detail-value">{{ userInfo.address }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Zip Code:</span>
+          <span class="detail-value">{{ userInfo.zipcode }}</span>
+        </div>
+      </div>
+
+      <button (click)="logout()" class="btn-logout">
+        Logout
+      </button>
+    </div>
+  </div>
 </div>
