@@ -61,14 +61,14 @@ export class Service {
   }
 
   public getUserPostedBookings(): Observable<bookingCard[]> {
-    const token = sessionStorage.getItem('user');
+    const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('user') || localStorage.getItem('user');
     const userData = JSON.parse(sessionStorage.getItem('userData') || '{}');
     const customerId = userData.id || userData.customerId || userData.userId || userData.sub;
     
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
-      'X-Customer-ID': customerId.toString()
+      'X-Customer-ID': customerId ? customerId.toString() : ''
     });
     
     // Get only bookings created by this customer (posted bookings)
@@ -81,7 +81,7 @@ export class Service {
   }
 
   public createBooking(bookingData: any): Observable<any> {
-    const token = localStorage.getItem('user') || sessionStorage.getItem('user');
+    const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('user') || localStorage.getItem('user');
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
@@ -95,7 +95,7 @@ export class Service {
   }
 
   public deleteBooking(bookingId: number): Observable<any> {
-    const token = localStorage.getItem('user') || sessionStorage.getItem('user');
+    const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('user') || localStorage.getItem('user');
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`

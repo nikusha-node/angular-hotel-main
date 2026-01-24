@@ -218,6 +218,21 @@ export class RoomBooking implements OnInit, OnDestroy {
 
   submitBooking(): void {
     if (!this.canBook() || !this.room) return;
+
+    const userDataStr = sessionStorage.getItem('userData');
+    let customerId = '';
+    
+    if (userDataStr) {
+      const userData = JSON.parse(userDataStr);
+      customerId = userData.id || userData.customerId || userData.userId || userData.sub;
+    }
+    
+    if (!customerId) {
+      this.showAlert = true;
+      this.alertMessage = 'Please login to book a room.';
+      setTimeout(() => this.closeAlert(), 3000);
+      return; 
+    }
     
     const bookingData = {
       roomID: this.room.id,
@@ -227,20 +242,35 @@ export class RoomBooking implements OnInit, OnDestroy {
       customerName: this.bookingForm.get('customerName')?.value,
       customerPhone: this.bookingForm.get('customerPhone')?.value,
       customerEmail: this.bookingForm.get('customerEmail')?.value,
+      customerId: String(customerId),
       adults: this.bookingForm.get('adults')?.value,
-      children: this.bookingForm.get('children')?.value
+      children: this.bookingForm.get('children')?.value,
+      isConfirmed: true
     };
     
-    // Here you would typically call a booking service
-    console.log('Booking submitted:', bookingData);
+    this.isLoading = true;
     
-    // Show success message and redirect
-    this.showAlert = true;
-    this.alertMessage = 'Booking successful! Redirecting to your bookings...';
-    
-    setTimeout(() => {
-      this.router.navigate(['/bookedrooms']);
-    }, 2000);
+    this.service.createBooking(bookingData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          console.log('Booking submitted:', res);
+          this.isLoading = false;
+          this.showAlert = true;
+          this.alertMessage = 'Booking successful! Redirecting to your bookings...';
+          
+          setTimeout(() => {
+            this.router.navigate(['/bookedrooms']);
+          }, 2000);
+        },
+        error: (err) => {
+          console.error('Booking error:', err);
+          this.isLoading = false;
+          this.showAlert = true;
+          this.alertMessage = 'Booking failed. Please try again.';
+          setTimeout(() => this.closeAlert(), 3000);
+        }
+      });
   }
 
   closeAlert(): void {
